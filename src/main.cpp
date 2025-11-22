@@ -1,5 +1,4 @@
-// Por enquanto é a estrutura meio padrão do projeto. Scripts recilados do
-// Rebonatto Não é muito difícil. Basicamente o UUID é a "porta" e as
+// Basicamente o UUID é a "porta" e as
 // características são os "cômodos" da casa. As características essencialmente
 // são propriedades de uma classe. A nossa classe aqui é o serviço. Então as
 // características podem representar qualquer coisa: um sensor, um motor, uma
@@ -32,9 +31,9 @@
 // https://www.uuidgenerator.net/
 
 // Caracteristicazinhas BÁSICAS
-#define SERVICE_UUID "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
-#define CARACTERISTICA1 "beb5483e-36e1-4688-b7f5-ea07361b26a8" // Essa Lê
-#define CARACTERISTICA2 "c5e5483e-36e1-4688-b7f5-ea07361b26a9" // Essa Escreve
+#define SERVICE_UUID "a0399359-453f-4ee0-b75a-00827fefc83e"
+#define CARACTERISTICA1 "0de627a6-ba1b-4cff-a5c9-31325d6509db" // Essa Lê
+#define CARACTERISTICA2 "5ef96bc4-f918-4f1a-a1c7-fc804d27dd53" // Essa Escreve
 #define CARACTERISTICA3 "a3a5483e-36e1-4688-b7f5-ea07361b26a0" // Essa notifica
 
 // Caracteristicazinhas pra parte do trabalho que pede índice
@@ -103,11 +102,11 @@ class MyCharacteristicCallbacks : public BLECharacteristicCallbacks {
         if (data[0] == 0x01) {
 
           Serial.println("Comando para LIGAR recebido.");
-           led = true;
+           led = true; Serial.println(led);
         } else if (data[0] == 0x00) {
 
           Serial.println("Comando para DESLIGAR recebido.");
-          led = false;
+          led = false; Serial.println(led);
         }
       }
     }
@@ -186,7 +185,7 @@ void setup() {
   BLEServer *pServer = BLEDevice::createServer();
   pServer->setCallbacks(new MyServerCallbacks());
 
-  BLEService *pService = pServer->createService(SERVICE_UUID);
+  BLEService *pService = pServer->createService(BLEUUID(SERVICE_UUID), 30);
 
   // CARACTERISTICA 1
   carac1_Ler = pService->createCharacteristic(CARACTERISTICA1,
